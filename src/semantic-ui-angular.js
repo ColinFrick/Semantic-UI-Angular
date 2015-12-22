@@ -7,6 +7,7 @@
             'semantic.ui.components.button',
             'semantic.ui.components.checkbox',
             'semantic.ui.components.divider',
+            'semantic.ui.components.field',
             'semantic.ui.components.radioButton',
             'semantic.ui.components.rating'
         ]);
