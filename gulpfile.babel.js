@@ -1,15 +1,17 @@
 'use strict';
 
-import gulp        from 'gulp';
-import jshint      from 'gulp-jshint';
-import runSequence from 'run-sequence';
-import babel       from 'gulp-babel';
-import del         from 'del';
-import karma       from 'karma';
-import Dgeni       from 'dgeni';
-import es          from 'event-stream';
-import plugins     from 'gulp-load-plugins';
-import dgeniConfig from './docs/config/dgeni-config.js';
+import gulp            from 'gulp';
+import jshint          from 'gulp-jshint';
+import runSequence     from 'run-sequence';
+import babel           from 'gulp-babel';
+import del             from 'del';
+import karma           from 'karma';
+import Dgeni           from 'dgeni';
+import es              from 'event-stream';
+import gulpLoadplugins from 'gulp-load-plugins';
+import dgeniConfig     from './docs/config/dgeni-config.js';
+
+var plugins = gulpLoadplugins();
 
 const paths = {
   jsSrc : 'src/**/*.js',
@@ -50,6 +52,20 @@ gulp.task('docs-assets', function() {
 
 gulp.task('clean-build', function(done) {
   del(['./dist'], done);
+});
+
+gulp.task('build', function(done) {
+  return gulp.src([
+        'src/**/*.js',
+        '!src/**/demo/*',
+        '!src/**/*.spec.js'
+      ])
+      .pipe(plugins.angularFilesort())
+      .pipe(plugins.concat('semantic-ui-angular.js'))
+      .pipe(gulp.dest('./dist'))
+      .pipe(plugins.concat('semantic-ui-angular.min.js'))
+      .pipe(plugins.uglify({mangle: false}))
+      .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('test', ['jshint'], function(done) {
